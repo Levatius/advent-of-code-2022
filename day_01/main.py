@@ -27,7 +27,11 @@ def run(elves, top=1):
     print(f'{top_total_calories} Calories')
 
 
-if __name__ == '__main__':
+def main():
     elves = get_data()
     run(elves)
     run(elves, top=3)
+
+
+if __name__ == '__main__':
+    main()
