@@ -36,7 +36,7 @@ class Ship:
     @classmethod
     def from_deck_layout_str(cls, deck_layout_str):
         deck_layout = deck_layout_str.splitlines()
-        # Reverse and transpose deck layout
+        # Reverse and transpose the deck layout
         deck_layout.reverse()
         deck_layout = list(map(list, zip(*deck_layout)))
         stacks = [Stack.from_column(column) for column in deck_layout if column[0].isdigit()]
@@ -48,6 +48,7 @@ class Ship:
         return ''.join(top_crates)
 
     def get_stack(self, stack_id):
+        # Avoiding reliance on the implementation detail that the stacks happen to be in order
         return next(stack for stack in self.stacks if stack.stack_id == stack_id)
 
     def operate_crane(self, procedure, crane_model):
