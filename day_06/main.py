@@ -1,10 +1,8 @@
 # https://adventofcode.com/2022/day/6
 
-from dataclasses import dataclass
 from more_itertools import windowed
 
 
-@dataclass
 class Device:
     @staticmethod
     def is_marker_valid(marker):
