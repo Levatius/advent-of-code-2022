@@ -1,4 +1,4 @@
-# https://adventofcode.com/2022
+# https://adventofcode.com/2022/day/0
 
 from dataclasses import dataclass
 
