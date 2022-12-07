@@ -13,7 +13,7 @@ class File:
 class Directory(File):
     name: str
     parent: 'Directory' = None
-    contents: list = field(default_factory=list)
+    contents: list[File] = field(default_factory=list)
 
     @property
     def size(self):
