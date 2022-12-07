@@ -80,8 +80,8 @@ class FileSystem:
                 self.current_directory.contents.append(new_file)
 
 
-def get_data(file_name='input.txt'):
-    file_system = FileSystem(total_space=70000000)
+def get_data(total_space, file_name='input.txt'):
+    file_system = FileSystem(total_space)
     with open(file_name) as f:
         for line in f.read().splitlines():
             file_system.parse_line(line)
@@ -100,7 +100,7 @@ def run_part_2(file_system, update_size):
 
 
 def main():
-    file_system = get_data()
+    file_system = get_data(total_space=70000000)
     run_part_1(file_system, at_most_size=100000)
     run_part_2(file_system, update_size=30000000)
 
