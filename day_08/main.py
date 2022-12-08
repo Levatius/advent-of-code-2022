@@ -22,7 +22,7 @@ class Forest:
     trees: list[list[Tree]]
 
     @classmethod
-    def from_tree_map(cls, height_map):
+    def from_height_map(cls, height_map):
         trees = [[Tree(int(height)) for height in height_row] for height_row in height_map.splitlines()]
         forest = cls(trees)
         forest._update_tree_visibilities()
@@ -66,7 +66,7 @@ class Forest:
 
 def get_data(file_name='input.txt'):
     with open(file_name) as f:
-        forest = Forest.from_tree_map(f.read())
+        forest = Forest.from_height_map(f.read())
     return forest
 
 
