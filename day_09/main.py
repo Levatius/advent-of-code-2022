@@ -61,6 +61,8 @@ class Rope:
         self.tail_pos_log.add(tuple(self.tail.pos))
 
     def get_stabilising_direction(self, leading_knot, tailing_knot):
+        # Look at all 8 positions around the tailing knot and find which one is the most stable with the leading knot
+        # Likely could be optimised by only looking at positions "towards" the leading knot
         direction_distances = {}
         for direction, vector in DIRECTIONS_MAP.items():
             new_tailing_knot = Knot(pos=tailing_knot.pos + vector)
