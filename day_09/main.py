@@ -50,8 +50,7 @@ class Rope:
     @staticmethod
     def get_stabilising_direction(leading_knot, tailing_knot):
         # Example: If leading knot is at (2,1) and tailing knot is at (0,0), stabilising direction = (1,1)
-        direction = np.fromiter(map(np.sign, leading_knot.pos - tailing_knot.pos), dtype=int)
-        return direction
+        return np.fromiter(map(np.sign, leading_knot.pos - tailing_knot.pos), dtype=int)
 
     def move(self, direction):
         self.head.move(direction)
