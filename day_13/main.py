@@ -13,22 +13,29 @@ class Packet:
     is_divider: bool = False
 
     def compare(self, left, right):
+        # Example: 2 vs 4
         if isinstance(left, int) and isinstance(right, int):
             if left < right:
                 return True
             elif left > right:
                 return False
+        # Example: None vs 4 (left is out of elements)
         elif left is None:
             return True
+        # Example: 2 vs None (right is out of elements)
         elif right is None:
             return False
+        # Example: 2 vs [4, 5, 6]
         elif isinstance(left, int) and isinstance(right, list):
             return self.compare([left], right)
+        # Example: [2, 3] vs 4
         elif isinstance(left, list) and isinstance(right, int):
             return self.compare(left, [right])
+        # Example: [2, 3] vs [4, 5, 6]
         elif isinstance(left, list) and isinstance(right, list):
             for left, right in zip_longest(left, right):
                 result = self.compare(left, right)
+                # Continue until we reach a definitive result
                 if result is None:
                     continue
                 return result
