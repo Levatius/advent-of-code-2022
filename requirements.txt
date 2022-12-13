@@ -1,2 +1,4 @@
-numpy==1.23.5
+matplotlib==3.6.2
 more-itertools==9.0.0
+networkx==2.8.8
+numpy==1.23.5
