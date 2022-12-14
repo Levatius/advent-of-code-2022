@@ -7,8 +7,8 @@ from more_itertools import windowed
 
 @dataclass
 class Sand:
-    position: np.array
     FALL_OFFSETS = [(0, 1), (-1, 1), (1, 1)]
+    position: np.array
 
     def fall(self, cave):
         for fall_offset in self.FALL_OFFSETS:
