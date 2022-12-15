@@ -20,8 +20,8 @@ class Sensor:
         )
         m = readout_pattern.match(readout_str)
         sensor_position = np.array((m['sensor_x'], m['sensor_y']), dtype=int)
-        closest_beacon_position = np.array((m['beacon_x'], m['beacon_y']), dtype=int)
-        return cls(sensor_position, closest_beacon_position)
+        beacon_position = np.array((m['beacon_x'], m['beacon_y']), dtype=int)
+        return cls(sensor_position, beacon_position)
 
     def __post_init__(self):
         self.scan_distance = int(np.linalg.norm(self.beacon_position - self.position, 1))
