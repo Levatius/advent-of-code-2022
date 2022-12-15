@@ -55,7 +55,7 @@ def run_part_1(sensors, y):
 
 
 def run_part_2(sensors, x_space, y_space):
-    for y in range(y_space.upper):
+    for y in range(y_space.lower, y_space.upper + 1):
         scan_rows = [scan_row for sensor in sensors if (scan_row := sensor.get_scan_row(y))]
         combined_scan_row = p.Interval(*scan_rows)
         if len(combined_scan_row) > 1:
