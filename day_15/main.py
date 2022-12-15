@@ -9,7 +9,7 @@ from dataclasses import dataclass, field
 @dataclass
 class Sensor:
     position: np.array
-    closest_beacon_position: np.array
+    beacon_position: np.array
     scan_distance: int = field(init=False)
 
     @classmethod
@@ -19,15 +19,14 @@ class Sensor:
             r'closest beacon is at x=(?P<beacon_x>-?\d+), y=(?P<beacon_y>-?\d+)'
         )
         m = readout_pattern.match(readout_str)
-        sensor_position = np.array((int(m['sensor_x']), int(m['sensor_y'])))
-        closest_beacon_position = np.array((int(m['beacon_x']), int(m['beacon_y'])))
+        sensor_position = np.array((m['sensor_x'], m['sensor_y']), dtype=int)
+        closest_beacon_position = np.array((m['beacon_x'], m['beacon_y']), dtype=int)
         return cls(sensor_position, closest_beacon_position)
 
     def __post_init__(self):
-        self.scan_distance = int(np.linalg.norm(self.closest_beacon_position - self.position, 1))
+        self.scan_distance = int(np.linalg.norm(self.beacon_position - self.position, 1))
 
-    def get_scan_row(self, y):
-        # Part 1 Example: y=10 would give us lower=-2, upper=24
+    def scan(self, y):
         sensor_x, sensor_y = self.position
         # These equations come from intersecting a diamond (L1 circle) with a horizontal line
         lower = sensor_x - self.scan_distance + abs(sensor_y - y)
@@ -44,23 +43,28 @@ def get_data(file_name='input.txt'):
 
 
 def run_part_1(sensors, y):
-    scan_rows = (scan_row for sensor in sensors if (scan_row := sensor.get_scan_row(y)))
-    combined_scan_row = p.Interval(*scan_rows)
-    sensors_on_scan_row = (p.singleton(sensor.position[0]) for sensor in sensors
-                           if sensor.position[1] == y)
-    beacons_on_scan_row = (p.singleton(sensor.closest_beacon_position[0]) for sensor in sensors
-                           if sensor.closest_beacon_position[1] == y)
-    unoccupied_scan_row = combined_scan_row - p.Interval(*beacons_on_scan_row) - p.Interval(*sensors_on_scan_row)
-    print(f'Unoccupied Scan Row: {unoccupied_scan_row}')
+    # Get all scans with the given y value
+    scans = (scan for sensor in sensors if (scan := sensor.scan(y)))
+    combined_scan = p.Interval(*scans)
+
+    # Find any sensors or beacons with the given y value
+    sensors = (p.singleton(sensor.position[0]) for sensor in sensors if sensor.position[1] == y)
+    unique_sensors = p.Interval(*sensors)
+    beacons = (p.singleton(sensor.beacon_position[0]) for sensor in sensors if sensor.beacon_position[1] == y)
+    unique_beacons = p.Interval(*beacons)
+
+    # Remove any sensors or beacons from the scan
+    unoccupied_scan = combined_scan - unique_sensors - unique_beacons
+    print(f'Unoccupied Scan: {unoccupied_scan}')
 
 
 def run_part_2(sensors, x_space, y_space):
     for y in range(y_space.lower, y_space.upper + 1):
-        scan_rows = [scan_row for sensor in sensors if (scan_row := sensor.get_scan_row(y))]
-        combined_scan_row = p.Interval(*scan_rows)
-        if len(combined_scan_row) > 1:
-            confined_scan_row = combined_scan_row & x_space
-            distress_beacon_x = next(p.iterate(x_space - confined_scan_row, step=1))
+        scans = (scan for sensor in sensors if (scan := sensor.scan(y)))
+        combined_scan = p.Interval(*scans)
+        if len(combined_scan) > 1:
+            confined_scan = combined_scan & x_space
+            distress_beacon_x = next(p.iterate(x_space - confined_scan, step=1))
             print(f'Distress Beacon: {distress_beacon_x, y}')
             break
 
