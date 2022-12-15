@@ -58,13 +58,13 @@ def run_part_1(sensors, y):
     print(f'Unoccupied Scan: {unoccupied_scan}')
 
 
-def run_part_2(sensors, x_space, y_space):
-    for y in range(y_space.lower, y_space.upper + 1):
+def run_part_2(sensors, x_bounds, y_bounds):
+    for y in range(y_bounds.lower, y_bounds.upper + 1):
         scans = (scan for sensor in sensors if (scan := sensor.scan(y)))
         combined_scan = p.Interval(*scans)
         if len(combined_scan) > 1:
-            confined_scan = combined_scan & x_space
-            distress_beacon_x = next(p.iterate(x_space - confined_scan, step=1))
+            confined_scan = combined_scan & x_bounds
+            distress_beacon_x = next(p.iterate(x_bounds - confined_scan, step=1))
             print(f'Distress Beacon: {distress_beacon_x, y}')
             break
 
@@ -72,7 +72,7 @@ def run_part_2(sensors, x_space, y_space):
 def main():
     sensors = get_data()
     run_part_1(sensors, y=2000000)
-    run_part_2(sensors, x_space=p.closed(0, 4000000), y_space=p.closed(0, 4000000))
+    run_part_2(sensors, x_bounds=p.closed(0, 4000000), y_bounds=p.closed(0, 4000000))
 
 
 if __name__ == '__main__':
