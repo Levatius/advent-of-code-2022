@@ -48,10 +48,10 @@ def run_part_1(sensors, y):
     combined_scan = p.Interval(*scans)
 
     # Find any sensors or beacons with the given y value
-    sensors = (p.singleton(sensor.position[0]) for sensor in sensors if sensor.position[1] == y)
-    unique_sensors = p.Interval(*sensors)
-    beacons = (p.singleton(sensor.beacon_position[0]) for sensor in sensors if sensor.beacon_position[1] == y)
-    unique_beacons = p.Interval(*beacons)
+    unique_sensors = p.Interval(*(p.singleton(sensor.position[0]) for sensor in sensors
+                                  if sensor.position[1] == y))
+    unique_beacons = p.Interval(*(p.singleton(sensor.beacon_position[0]) for sensor in sensors
+                                  if sensor.beacon_position[1] == y))
 
     # Remove any sensors or beacons from the scan
     unoccupied_scan = combined_scan - unique_sensors - unique_beacons
