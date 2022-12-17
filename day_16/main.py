@@ -48,7 +48,7 @@ class TunnelNetwork(nx.Graph):
         remaining_valves = [valve for valve in remaining_valves if valve.name != current_valve.name]
         pressures = []
         for valve in remaining_valves:
-            # Deduce cost of moving to the valve and opening it
+            # Deduct the cost of moving to the valve and opening it
             new_remaining_minutes = remaining_minutes - self.cached_path_lengths[current_valve][valve] - 1
 
             # If we still have time, contribute pressure and then continue on from this valve
