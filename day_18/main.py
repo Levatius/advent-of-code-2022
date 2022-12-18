@@ -28,7 +28,7 @@ def run_part_2(exposed_sides):
     graph = nx.Graph()
     exposed_positions = [tuple(side.position) for side in exposed_sides]
     for side in exposed_sides:
-        for connected_position in side.get_connected_exposed_sides(exposed_positions):
+        for connected_position in side.get_connected_exposed_positions(exposed_positions):
             graph.add_edge(tuple(side.position), connected_position)
     largest_connected_component = max(nx.connected_components(graph), key=len)
     print(f'Exterior Sides: {len(largest_connected_component)}')

@@ -42,18 +42,11 @@ class Side:
         # Every side has 4 edges
         return (Edge.from_side(self, edge_offset) for edge_offset in self.get_edge_offsets())
 
-    def get_connected_exposed_sides(self, exposed_positions):
+    def get_connected_exposed_positions(self, exposed_positions):
         for edge in self.edges:
             adjacent_side_positions = edge.get_adjacent_side_positions()
-            # Reduce our adjacent side positions to only the ones we want
-            adjacent_exposed_positions = []
-            for position in adjacent_side_positions:
-                # Skip adjacent sides that are not exposed (or this side)
-                is_not_exposed = position not in exposed_positions
-                is_self = position == tuple(self.position)
-                if is_not_exposed or is_self:
-                    continue
-                adjacent_exposed_positions.append(position)
+            adjacent_exposed_positions = [position for position in adjacent_side_positions if
+                                          position in exposed_positions and position != tuple(self.position)]
 
             if len(adjacent_exposed_positions) == 3:
                 # Side is "connected" to 3 other sides through their shared edge
