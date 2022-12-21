@@ -40,8 +40,7 @@ def run_part_1(troop, root_monkey_name='root'):
 
 def run_part_2(troop, root_monkey_name='root', human_name='humn'):
     # Change Monkey 'humn' into a Human
-    human = Human(human_name)
-    troop.monkeys[human_name] = human
+    troop.monkeys[human_name] = Human(human_name)
 
     # Find out what the Left Monkey and Right Monkey from the Root Monkey yell
     root_monkey = troop.monkeys[root_monkey_name]
