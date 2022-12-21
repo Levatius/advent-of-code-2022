@@ -33,21 +33,23 @@ def get_data(file_name='input.txt'):
     return troop
 
 
-def run_part_1(troop):
-    root_monkey = troop.monkeys['root']
+def run_part_1(troop, root_monkey_name='root'):
+    root_monkey = troop.monkeys[root_monkey_name]
     print(f'Root Monkey Yells: {root_monkey.yell(troop):.0f}')
 
 
-def run_part_2(troop, unknown_symbol='humn'):
+def run_part_2(troop, root_monkey_name='root', human_name='humn'):
     # Change Monkey 'humn' into a Human
-    human = Human(name=unknown_symbol)
-    troop.monkeys[human.name] = human
+    human = Human(human_name)
+    troop.monkeys[human_name] = human
 
-    # Find out what the Human yelled
-    root_monkey = troop.monkeys['root']
+    # Find out what the Left Monkey and Right Monkey from the Root Monkey yell
+    root_monkey = troop.monkeys[root_monkey_name]
     left_monkey_yells = troop.monkeys[root_monkey.left_monkey_name].yell(troop)
     right_monkey_yells = troop.monkeys[root_monkey.right_monkey_name].yell(troop)
-    human_yelled = sympy.solve(left_monkey_yells - right_monkey_yells, unknown_symbol)[0]
+
+    # Solve to find out what the Human yelled
+    human_yelled = sympy.solve(left_monkey_yells - right_monkey_yells, human_name)[0]
     print(f'Human Yelled: {human_yelled:.0f}')
 
 
